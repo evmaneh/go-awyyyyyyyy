@@ -9,11 +9,6 @@ def median_filter(image, kernel_size=5):
 def find_edges(image):
     return cv2.Canny(image, 100, 200)
 
-def overlay_images(background, overlay):
-    overlay_mask = cv2.cvtColor(overlay, cv2.COLOR_GRAY2BGR)
-    overlay_mask[np.all(overlay == [0, 0, 0], axis=-1)] = [255, 255, 255]
-    return cv2.addWeighted(overlay_mask, 0.5, background, 0.5, 0)
-
 def main():
     st.title("Image Median Filter with Find Edges Effect")
     st.write("Upload an image and apply a median filter with a kernel size of 5x5 pixels to the bottom layer, and apply the find edges effect to the top layer.")
@@ -37,14 +32,12 @@ def main():
         # Apply find edges effect to the top layer
         edges_img_array = find_edges(duplicate_layer)
 
-        # Overlay edges image onto the median filtered image
-        overlayed_image = overlay_images(filtered_img_array, edges_img_array)
-
         # Convert numpy array back to image
-        overlayed_image = Image.fromarray(overlayed_image)
+        filtered_image = Image.fromarray(filtered_img_array)
+        edges_image = Image.fromarray(edges_img_array)
 
         # Display the filtered image and edges image
-        st.image(overlayed_image, caption="Overlayed Image", use_column_width=True)
+        st.image([filtered_image, edges_image], caption=["Filtered Image", "Edges Image"], use_column_width=True)
 
 if __name__ == "__main__":
     main()
