@@ -9,14 +9,9 @@ def median_filter(image, kernel_size=5):
 def find_edges(image):
     return cv2.Canny(image, 100, 200)
 
-def remove_black(image):
-    image[np.all(image == [0, 0, 0], axis=-1)] = [255, 255, 255]  # Replace black pixels with white
-
-    return image
-
 def main():
-    st.title("Image Median Filter with Find Edges Effect and Black Removal")
-    st.write("Upload an image and apply a median filter with a kernel size of 5x5 pixels to the bottom layer, apply the find edges effect to the top layer, and remove all black colors from the top layer.")
+    st.title("Image Median Filter with Find Edges Effect")
+    st.write("Upload an image and apply a median filter with a kernel size of 5x5 pixels to the bottom layer, and apply the find edges effect to the top layer.")
 
     uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
 
@@ -36,9 +31,6 @@ def main():
 
         # Apply find edges effect to the top layer
         edges_img_array = find_edges(duplicate_layer)
-
-        # Remove all black colors from the top layer
-        edges_img_array = remove_black(edges_img_array)
 
         # Convert numpy array back to image
         filtered_image = Image.fromarray(filtered_img_array)
